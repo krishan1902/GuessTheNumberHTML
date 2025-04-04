@@ -1,70 +1,48 @@
-var winpic = document.createElement("img");
-winpic.src = "winpic.gif";
+let secretNumber = Math.floor(Math.random() * 100) + 1;
+let attemptsLeft = 10;
 
-// Generate a random number between 1 and 100
-var Zufallszahl = Math.floor(Math.random() * 100) + 1;
+const guessInput = document.getElementById("guessInput");
+const guessButton = document.getElementById("guessButton");
+const restartButton = document.getElementById("restartButton");
+const message = document.getElementById("message");
+const attemptsDisplay = document.getElementById("attempts");
 
-// Keep track of the number of remaining guesses
-var remaining = 10;
+guessButton.addEventListener("click", () => {
+  const guess = parseInt(guessInput.value);
 
-// Get references to the relevant elements in the HTML
-var remainingElem = document.getElementById("guesses-remaining");
-var inputElem = document.getElementById("guess-input");
-var guessButtonElem = document.getElementById("guess-button");
-var resultElem = document.getElementById("result");
+  if (isNaN(guess) || guess < 1 || guess > 100) {
+    message.textContent = "Bitte gib eine Zahl zwischen 1 und 100 ein.";
+    return;
+  }
 
-// When the user clicks the "Guess" button
-guessButtonElem.addEventListener("click", function() {
-  // Get the user's guess
-  var guess = inputElem.value;
+  attemptsLeft--;
+  attemptsDisplay.textContent = `Versuche übrig: ${attemptsLeft}`;
 
-  // Check if the user's guess is correct
-  if (guess == Zufallszahl) {
-    resultElem.textContent = "Congratulations! You guessed the number!";
-    inputElem.disabled = true;
-    guessButtonElem.disabled = true;
-    document.body.appendChild(winpic);
-  } else if (guess < Zufallszahl) {
-    resultElem.textContent = "Sorry, your guess is too low.";
+  if (guess === secretNumber) {
+    message.textContent = `🎉 Glückwunsch! Die Zahl war ${secretNumber}.`;
+    endGame();
+  } else if (attemptsLeft === 0) {
+    message.textContent = `😢 Leider verloren. Die Zahl war ${secretNumber}.`;
+    endGame();
   } else {
-    resultElem.textContent = "Sorry, your guess is too high.";
+    message.textContent = guess < secretNumber ? "Zu niedrig!" : "Zu hoch!";
   }
 
-  // Update the number of remaining guesses
-  remaining--;
-  remainingElem.textContent = remaining;
-
-  // Check if the user has run out of guesses
-  if (remaining == 0) {
-    
-    resultElem.textContent = "Sorry, you're out of guesses. The number was " + Zufallszahl + ".";
-    inputElem.disabled = true;
-    guessButtonElem.disabled = true;
-    
-  }
-  // Get a reference to the "New Game" button
-var newGameButtonElem = document.getElementById("new-game-button");
-
-// When the "New Game" button is clicked
-newGameButtonElem.addEventListener("click", function() {
-  
-  if (document.body.contains(winpic)) {
-    document.body.removeChild(winpic);
-  }
-  // Generate a new random number
-  Zufallszahl = Math.floor(Math.random() * 100) + 1;
-
-  // Reset the number of remaining guesses
-  remaining = 10;
-  remainingElem.textContent = remaining;
-
-  // Clear the input field and the result message
-  inputElem.value = "";
-  resultElem.textContent = "";
-
-  //Enable the input field and the "Guess" button
-  inputElem.disabled = false;
-  guessButtonElem.disabled = false;
+  guessInput.value = "";
+  guessInput.focus();
 });
 
+restartButton.addEventListener("click", () => {
+  secretNumber = Math.floor(Math.random() * 100) + 1;
+  attemptsLeft = 10;
+  attemptsDisplay.textContent = `Versuche übrig: ${attemptsLeft}`;
+  message.textContent = "";
+  guessInput.value = "";
+  guessButton.disabled = false;
+  restartButton.classList.add("hidden");
 });
+
+function endGame() {
+  guessButton.disabled = true;
+  restartButton.classList.remove("hidden");
+}

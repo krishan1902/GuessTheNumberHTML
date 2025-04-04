@@ -1,16 +1,21 @@
-<html>
-  <head>
-    <title>Guess the Number</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
-    <h1>Guess the Number - hosted by Azure</h1>
-    <p>I'm thinking of a number between 1 and 100. Can you guess what it is?</p>
-    <p>You have <span id="guesses-remaining">10</span> guesses remaining.</p>
-    <button id="new-game-button">New Game</button>
-    <input type="number" id="guess-input" placeholder="Enter your guess here">
-    <button id="guess-button">Guess</button>
-    <p id="result"></p>
-    <script src="main.js"></script>    
-  </body>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zahlenraten Spiel</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Zahlenraten</h1>
+    <p>Rate eine Zahl zwischen 1 und 100</p>
+    <input type="number" id="guessInput" placeholder="Dein Tipp" />
+    <button id="guessButton">Rate</button>
+    <p id="message"></p>
+    <p id="attempts">Versuche übrig: 10</p>
+    <button id="restartButton" class="hidden">Neustarten</button>
+  </div>
+  <script src="main.js"></script>
+</body>
 </html>
